@@ -20,7 +20,27 @@
     </div>
 </body>
 <script>
-    getList();
+    $(function () {
+        getList();
+        $('.button_add').click(() => {
+            let name = $("input").val();
+            console.log(name);
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:3000/api/addData',
+                data: { name: name },
+                success: function (data) {
+                    console.log(data)
+                    $('#app ul').append(`<li>${name} <button class="button_delete_${data.insertId}"  onclick="deleteData(${data.insertId})">删除</button></li>`);
+                },
+                error: function () {
+                    console.log('error');
+                }
+            })
+            return false;
+        });
+
+    })
     function getList() {
         $.ajax({
             type: 'get',
@@ -45,27 +65,7 @@
             }
         })
 
-    }
-    $(function () {
-        $('.button_add').click(() => {
-            let name = $("input").val();
-            console.log(name);
-            $.ajax({
-                type: 'post',
-                url: 'http://localhost:3000/api/addData',
-                data: { name: name },
-                success: function (data) {
-                    console.log(data)
-                    $('#app ul').append(`<li>${name} <button class="button_delete_${data.insertId}"  onclick="deleteData(${data.insertId})">删除</button></li>`);
-                },
-                error: function () {
-                    console.log('error');
-                }
-            })
-            return false;
-        });
-
-    })
+    };
     function deleteData(id) {
         console.log(id);
         $.ajax({
