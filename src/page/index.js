@@ -1,7 +1,7 @@
-var mysql = require('mysql');
-var express = require('express');
-var bodyParser = require('body-parser');
-var app = express();
+const mysql = require('mysql');
+const express = require('express');
+const bodyParser = require('body-parser');
+let app = express();
 app.use(bodyParser.json());//数据JSON类型
 app.use(bodyParser.urlencoded({ extended: false }));//解析post请求数据
 //配置连接参数
@@ -10,7 +10,7 @@ var connection = mysql.createConnection({
    user: 'root',
    password: '123456',
    database: 'ai',
-});
+}); 
 connection.connect();//连接
 app.all('*', function (req, res, next) {
    res.header("Access-Control-Allow-Origin", "*");

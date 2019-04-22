@@ -15,10 +15,10 @@
         </ul>
         <form action="">
             <input type="text">
-            <button type='submit' class="button_add">添加</button>
+            <button type='submit' class="button_add">添加1</button>
         </form>
     </div>
-</body>
+</body> 
 <script>
     $(function () {
         getList();
@@ -30,13 +30,13 @@
                 url: 'http://localhost:3000/api/addData',
                 data: { name: name },
                 success: function (data) {
-                    console.log(data)
+                    console.log(data) 
                     $('#app ul').append(`<li>${name} <button class="button_delete_${data.insertId}"  onclick="deleteData(${data.insertId})">删除</button></li>`);
                 },
                 error: function () {
                     console.log('error');
                 }
-            })
+            }) 
             return false;
         });
 
@@ -45,7 +45,7 @@
         $.ajax({
             type: 'get',
             url: 'http://localhost:3000/api/getData',
-            data: { name: '' },
+            data: { name: ''},
             success: function (data) {
                 // console.log(data);
                 let HTML = '';
