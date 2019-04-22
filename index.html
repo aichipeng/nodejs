@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>test</title>
+</head>
+<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+
+<body>
+    <div id='app'>
+        <ul>
+        </ul>
+        <form action="">
+            <input type="text">
+            <button type='submit' class="button_add">添加</button>
+        </form>
+    </div>
+</body>
+<script>
+    getList();
+    function getList() {
+        $.ajax({
+            type: 'get',
+            url: 'http://localhost:3000/api/getData',
+            data: { name: '' },
+            success: function (data) {
+                console.log(data);
+                let HTML = '';
+                for (let i in data) {
+                    HTML += `
+                        <li>
+                            ${data[i].name}
+                            <button class="button_delete_${data[i].id}" onclick="deleteData(${data[i].id})">删除</button>
+                        </li>
+                    `
+                }
+                $('#app ul').append(HTML);
+
+            },
+            error: function () {
+                console.log('error');
+            }
+        })
+
+    }
+    $(function () {
+        $('.button_add').click(() => {
+            let name = $("input").val();
+            console.log(name);
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:3000/api/addData',
+                data: { name: name },
+                success: function (data) {
+                    console.log(data)
+                    $('#app ul').append(`<li>${name} <button class="button_delete_${data.insertId}"  onclick="deleteData(${data.insertId})">删除</button></li>`);
+                },
+                error: function () {
+                    console.log('error');
+                }
+            })
+            return false;
+        });
+
+    })
+    function deleteData(id) {
+        console.log(id);
+        $.ajax({
+            type: 'post',
+            url: 'http://localhost:3000/api/deleteData',
+            data: { id: id },
+            success: function (data) {
+                $('.button_delete_' + id).parent().remove();
+            },
+            error: function () {
+                console.log('error');
+            }
+        })
+    };
+</script>
+
+</html>
